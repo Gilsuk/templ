@@ -14,6 +14,6 @@ func (t rdTempl) Compose(templs ...Templ) Templ {
 	return fnTempl{}
 }
 
-func (t rdTempl) WriteTo(wr io.Writer) (int64, error) {
+func (t rdTempl) Write(wr io.Writer) (int, error) {
 	return 0, nil
 }

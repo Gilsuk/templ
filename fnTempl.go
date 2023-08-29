@@ -10,6 +10,6 @@ func (t fnTempl) Compose(templs ...Templ) Templ {
 	return fnTempl{}
 }
 
-func (t fnTempl) WriteTo(wr io.Writer) (int64, error) {
+func (t fnTempl) Write(wr io.Writer) (int, error) {
 	return 0, nil
 }

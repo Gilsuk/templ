@@ -1,12 +1,15 @@
 package templ
 
-import "io"
+import (
+	"io"
+)
 
 func FromString(value string) Templ {
-	return strTempl{}
+	return strTempl{value: value}
 }
 
 type strTempl struct {
+	value string
 }
 
 func (t strTempl) Compose(templs ...Templ) Templ {
@@ -14,6 +17,6 @@ func (t strTempl) Compose(templs ...Templ) Templ {
 	return fnTempl{}
 }
 
-func (t strTempl) WriteTo(wr io.Writer) (int64, error) {
-	return 0, nil
+func (t strTempl) Write(wr io.Writer) (int, error) {
+	return wr.Write([]byte(t.value))
 }

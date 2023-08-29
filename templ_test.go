@@ -20,7 +20,7 @@ func TestByPass(t *testing.T) {
 func isTheSame(template templ.Templ, expect string) error {
 
 	var res bytes.Buffer
-	template.WriteTo(&res)
+	template.Write(&res)
 
 	bufTempl := bytes.NewBufferString(expect)
 	lenBufTempl := bufTempl.Len()
