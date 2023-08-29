@@ -3,6 +3,7 @@ package templ_test
 import (
 	"bytes"
 	"fmt"
+	"strings"
 	"testing"
 
 	"git.gilsuk.page/gilsuk/templ"
@@ -17,12 +18,24 @@ func TestByPass(t *testing.T) {
 	}
 }
 
+func TestCompose(t *testing.T) {
+	template := "A1b2{}"
+	value1 := "C3d4"
+	expect := "A1b2C3d4"
+
+	err := isTheSame(templ.FromString(template).Compose(templ.FromString(value1)), expect)
+
+	if err != nil {
+		t.Errorf("%+v", err)
+	}
+}
+
 func isTheSame(template templ.Templ, expect string) error {
 
 	var res bytes.Buffer
 	template.Write(&res)
 
-	bufTempl := bytes.NewBufferString(expect)
+	bufTempl := strings.NewReader(expect)
 	lenBufTempl := bufTempl.Len()
 
 	for i := 0; i < lenBufTempl; i++ {

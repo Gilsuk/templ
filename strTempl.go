@@ -13,10 +13,16 @@ type strTempl struct {
 }
 
 func (t strTempl) Compose(templs ...Templ) Templ {
-
-	return fnTempl{}
+	return decoTempl{}
 }
 
-func (t strTempl) Write(wr io.Writer) (int, error) {
-	return wr.Write([]byte(t.value))
+func (t strTempl) Write(wr io.Writer) error {
+	n, err := wr.Write([]byte(t.value))
+	if n != len(t.value) {
+		return err
+	}
+	if err != nil && err != io.EOF {
+		return err
+	}
+	return nil
 }

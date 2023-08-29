@@ -11,6 +11,6 @@ func (t decoTempl) Compose(templs ...Templ) Templ {
 	return decoTempl{deco: t, args: templs}
 }
 
-func (t decoTempl) Write(wr io.Writer) (int, error) {
-	return 0, nil
+func (t decoTempl) Write(wr io.Writer) error {
+	return nil
 }

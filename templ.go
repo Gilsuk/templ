@@ -4,5 +4,5 @@ import "io"
 
 type Templ interface {
 	Compose(...Templ) Templ
-	Write(io.Writer) (int, error)
+	Write(io.Writer) error
 }

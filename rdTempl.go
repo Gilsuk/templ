@@ -10,10 +10,9 @@ type rdTempl struct {
 }
 
 func (t rdTempl) Compose(templs ...Templ) Templ {
-
-	return fnTempl{}
+	return decoTempl{}
 }
 
-func (t rdTempl) Write(wr io.Writer) (int, error) {
-	return 0, nil
+func (t rdTempl) Write(wr io.Writer) error {
+	return nil
 }
