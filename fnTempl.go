@@ -5,7 +5,7 @@ import "io"
 type fnTempl struct {
 }
 
-func (t fnTempl) Compose(templs ...templ) templ {
+func (t fnTempl) Compose(templs ...Templ) Templ {
 
 	return fnTempl{}
 }

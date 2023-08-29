@@ -2,7 +2,7 @@ package templ
 
 import "io"
 
-type templ interface {
-	Compose(...templ) templ
+type Templ interface {
+	Compose(...Templ) Templ
 	WriteTo(io.Writer) (int64, error)
 }

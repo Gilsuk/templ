@@ -2,14 +2,14 @@ package templ
 
 import "io"
 
-func FromString(value string) templ {
+func FromString(value string) Templ {
 	return strTempl{}
 }
 
 type strTempl struct {
 }
 
-func (t strTempl) Compose(templs ...templ) templ {
+func (t strTempl) Compose(templs ...Templ) Templ {
 
 	return fnTempl{}
 }
