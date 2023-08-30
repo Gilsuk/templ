@@ -10,7 +10,7 @@ type rdTempl struct {
 }
 
 func (t rdTempl) Compose(templs ...Templ) Templ {
-	return decoTempl{}
+	return fnTempl{}
 }
 
 func (t rdTempl) Write(wr io.Writer) error {

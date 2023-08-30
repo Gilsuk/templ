@@ -19,14 +19,20 @@ func TestByPass(t *testing.T) {
 }
 
 func TestCompose(t *testing.T) {
-	template := "A1b2{}"
-	value1 := "C3d4"
-	expect := "A1b2C3d4"
+	cases := []struct {
+		template string
+		value    string
+		expect   string
+	}{
+		{template: "a1b2{}", value: "C3d4", expect: "A1b2C3d4"},
+	}
 
-	err := isTheSame(templ.FromString(template).Compose(templ.FromString(value1)), expect)
+	for i, testCase := range cases {
+		err := isTheSame(templ.FromString(testCase.template).Compose(templ.FromString(testCase.value)), testCase.expect)
 
-	if err != nil {
-		t.Errorf("%+v", err)
+		if err != nil {
+			t.Errorf("msg: %s, at case idx[%d]", err.Error(), i)
+		}
 	}
 }
 
