@@ -7,7 +7,7 @@ type fnTempl struct {
 }
 
 func (t fnTempl) Compose(templs ...Templ) Templ {
-	return fnTempl{}
+	return t
 }
 
 func (t fnTempl) Write(wr io.Writer) error {
