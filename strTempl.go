@@ -18,29 +18,32 @@ func (t strTempl) Compose(templs ...Templ) Templ {
 	return fnTempl{func(wr io.Writer) error {
 		rd := bufio.NewReader(strings.NewReader(t.value))
 
+		idx := 0
 		for {
-			data, err := rd.ReadBytes('{')
+			data, err := rd.ReadBytes('}')
 
-			if err == io.EOF {
+			if err != nil && err != io.EOF {
+				return err
+			}
+
+			if len(data) < 2 {
 				wr.Write(data)
 				return nil
-			} else if err != nil {
-				return err
 			}
 
-			b, err := rd.ReadByte()
-
-			if err == io.EOF {
-				return nil
-			} else if err != nil {
-				return err
-			}
-
-			if b == '}' {
+			if data[len(data)-2] == '{' && len(templs) > idx {
 				wr.Write(data[:len(data)-2])
+				err := templs[idx].Write(wr)
+				idx++
+				if err != nil {
+					return nil
+				}
 			} else {
 				wr.Write(data)
-				wr.Write([]byte{b})
+			}
+
+			if err == io.EOF {
+				return nil
 			}
 		}
 	}}

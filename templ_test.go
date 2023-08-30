@@ -24,11 +24,38 @@ func TestCompose(t *testing.T) {
 		value    string
 		expect   string
 	}{
-		{template: "a1b2{}", value: "C3d4", expect: "A1b2C3d4"},
+		{template: "A1b2{}", value: "C3d4", expect: "A1b2C3d4"},
+		{template: "A1b2}", value: "C3d4", expect: "A1b2}"},
+		{template: "A1b{2}", value: "C3d4", expect: "A1b{2}"},
+		{template: "{}", value: "C3d4", expect: "C3d4"},
+		{template: "", value: "C3d4", expect: ""},
+		{template: "}", value: "C3d4", expect: "}"},
+		{template: "A{}c{}e}", value: "b", expect: "Abc{}e"},
 	}
 
 	for i, testCase := range cases {
 		err := isTheSame(templ.FromString(testCase.template).Compose(templ.FromString(testCase.value)), testCase.expect)
+
+		if err != nil {
+			t.Errorf("msg: %s, at case idx[%d]", err.Error(), i)
+		}
+	}
+}
+
+func TestMultiCompose(t *testing.T) {
+	cases := []struct {
+		template string
+		value1   string
+		value2   string
+		expect   string
+	}{
+		{template: "A1b2{}", value1: "C3d4", value2: "", expect: "A1b2C3d4"},
+		{template: "A1b2{}{}", value1: "C3d4", value2: "E5", expect: "A1b2C3d4E5"},
+		{template: "A1b2{}{}", value1: "", value2: "E5", expect: "A1b2E5"},
+	}
+
+	for i, testCase := range cases {
+		err := isTheSame(templ.FromString(testCase.template).Compose(templ.FromString(testCase.value1), templ.FromString(testCase.value2)), testCase.expect)
 
 		if err != nil {
 			t.Errorf("msg: %s, at case idx[%d]", err.Error(), i)
