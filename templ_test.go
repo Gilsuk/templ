@@ -9,9 +9,18 @@ import (
 	"git.gilsuk.page/gilsuk/templ"
 )
 
-func TestByPass(t *testing.T) {
+func TestByPassStrTempl(t *testing.T) {
 	template := "A1b2{}C3d4{} {}e6f7{}"
 	err := isTheSame(templ.FromString(template), template)
+
+	if err != nil {
+		t.Errorf("%+v", err)
+	}
+}
+
+func TestByPassRdTempl(t *testing.T) {
+	expect := "{} header {} template"
+	err := isTheSame(templ.FromFile(".", "testdata", "header.templ").Compose(templ.FromString("B1"), templ.FromString("5d")), expect)
 
 	if err != nil {
 		t.Errorf("%+v", err)
