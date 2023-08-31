@@ -1,8 +1,11 @@
 package templ_test
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -12,15 +15,6 @@ import (
 func TestByPassStrTempl(t *testing.T) {
 	template := "A1b2{}C3d4{} {}e6f7{}"
 	err := isTheSame(templ.FromString(template), template)
-
-	if err != nil {
-		t.Errorf("%+v", err)
-	}
-}
-
-func TestByPassRdTempl(t *testing.T) {
-	expect := "{} header {} template"
-	err := isTheSame(templ.FromFile(".", "testdata", "header.templ").Compose(templ.FromString("B1"), templ.FromString("5d")), expect)
 
 	if err != nil {
 		t.Errorf("%+v", err)
@@ -47,6 +41,32 @@ func TestCompose(t *testing.T) {
 
 		if err != nil {
 			t.Errorf("msg: %s, at case idx[%d]", err.Error(), i)
+		}
+	}
+}
+
+func TestRdTempl(t *testing.T) {
+	file, _ := os.OpenFile(filepath.Join(".", "testdata", "result.templ"), os.O_CREATE|os.O_TRUNC, 0666)
+	defer file.Close()
+
+	templ.FromFile(".", "testdata", "outer.templ").
+		Compose(templ.FromFile(".", "testdata", "content1.templ"), templ.FromFile(".", "testdata", "inner.templ").
+			Compose(templ.FromFile(".", "testdata", "content2.templ"))).
+		Write(file)
+
+	expect, _ := os.Open(filepath.Join(".", "testdata", "expect.templ"))
+	defer expect.Close()
+
+	resRd := bufio.NewScanner(file)
+	expRd := bufio.NewScanner(expect)
+
+	for resRd.Scan() {
+		if !expRd.Scan() {
+			t.Errorf("%s is different with %s", filepath.Join(".", "testdata", "result.templ"), filepath.Join(".", "testdata", "expect.templ"))
+		}
+
+		if resRd.Text() != expRd.Text() {
+			t.Errorf("%s is different with %s", filepath.Join(".", "testdata", "result.templ"), filepath.Join(".", "testdata", "expect.templ"))
 		}
 	}
 }
