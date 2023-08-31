@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"git.gilsuk.page/gilsuk/templ"
+	"github.com/gilsuk/templ"
 )
 
 func TestByPassStrTempl(t *testing.T) {
